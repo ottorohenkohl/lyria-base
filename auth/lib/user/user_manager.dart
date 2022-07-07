@@ -7,12 +7,12 @@ class UserManager {
   UserManager();
 
   Future<Iterable<User>> all() async {
-    var users = (await Hive.openBox<User>('users'));
-    return users.values;
+    var storage = await Hive.openBox<User>('users');
+    return storage.values;
   }
 
   Future<void> add(User user) async {
-    var users = (await Hive.openBox<User>('users'));
+    var storage = await Hive.openBox<User>('users');
 
     try {
       get(user.username);
@@ -29,12 +29,12 @@ class UserManager {
       throw FormatException();
     }
 
-    users.add(user);
+    storage.add(user);
   }
 
   Future<User> get(String username) async {
-    var users = (await Hive.openBox<User>('users'));
-    var user = users.values.where((user) => user.username == username);
+    var storage = await Hive.openBox<User>('users');
+    var user = storage.values.where((user) => user.username == username);
 
     try {
       return user.single;
