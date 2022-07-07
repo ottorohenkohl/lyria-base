@@ -22,7 +22,7 @@ class ConfigManager {
         apiPort: 8080,
         apiPath: '/',
         sessionDuration: 30,
-        sessionKeeping: true);
+        sessionKeeping: false);
     ;
   }
 }
