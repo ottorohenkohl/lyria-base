@@ -26,5 +26,6 @@ class User extends HiveObject {
   @HiveField(6)
   String? address;
 
-  User(this.username, this.password, this.role) : created = DateTime.now();
+  User({required this.username, required this.password, required this.role})
+      : created = DateTime.now();
 }

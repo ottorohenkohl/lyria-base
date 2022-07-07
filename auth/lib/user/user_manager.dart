@@ -11,7 +11,7 @@ class UserManager {
     return users.values;
   }
 
-  Future<User> add(User user) async {
+  Future<void> add(User user) async {
     var users = (await Hive.openBox<User>('users'));
 
     try {
@@ -30,7 +30,6 @@ class UserManager {
     }
 
     users.add(user);
-    return user;
   }
 
   Future<User> get(String username) async {
