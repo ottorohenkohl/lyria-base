@@ -6,11 +6,6 @@ import 'package:hive/hive.dart';
 class UserManager {
   UserManager();
 
-  Future<Iterable<User>> all() async {
-    var storage = await Hive.openBox<User>('users');
-    return storage.values;
-  }
-
   Future<void> add(User user) async {
     var storage = await Hive.openBox<User>('users');
 
@@ -30,6 +25,11 @@ class UserManager {
     }
 
     storage.add(user);
+  }
+
+  Future<Iterable<User>> all() async {
+    var storage = await Hive.openBox<User>('users');
+    return storage.values;
   }
 
   Future<User> get(String username) async {
