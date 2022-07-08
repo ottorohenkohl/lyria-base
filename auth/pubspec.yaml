@@ -8,6 +8,7 @@ environment:
 dependencies: 
   hive: ^2.2.3
   lints: ^2.0.0
+  uuid: ^3.0.6
 
 dev_dependencies:
   hive_generator: ^1.1.3

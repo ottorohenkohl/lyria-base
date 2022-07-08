@@ -1,44 +1,37 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'config.dart';
+part of 'session.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class ConfigAdapter extends TypeAdapter<Config> {
+class SessionAdapter extends TypeAdapter<Session> {
   @override
-  final int typeId = 2;
+  final int typeId = 3;
 
   @override
-  Config read(BinaryReader reader) {
+  Session read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Config(
-      apiHost: fields[0] as String,
-      apiPort: fields[2] as int,
-      apiPath: fields[1] as String,
-      sessionDuration: fields[3] as int,
-      sessionKeeping: fields[4] as bool,
-    );
+    return Session(
+      cookie: fields[0] as String,
+      entity: fields[1] as dynamic,
+    )..validity = fields[2] as DateTime?;
   }
 
   @override
-  void write(BinaryWriter writer, Config obj) {
+  void write(BinaryWriter writer, Session obj) {
     writer
-      ..writeByte(5)
-      ..writeByte(0)
-      ..write(obj.apiHost)
-      ..writeByte(1)
-      ..write(obj.apiPath)
-      ..writeByte(2)
-      ..write(obj.apiPort)
       ..writeByte(3)
-      ..write(obj.sessionDuration)
-      ..writeByte(4)
-      ..write(obj.sessionKeeping);
+      ..writeByte(0)
+      ..write(obj.cookie)
+      ..writeByte(1)
+      ..write(obj.entity)
+      ..writeByte(2)
+      ..write(obj.validity);
   }
 
   @override
@@ -47,7 +40,7 @@ class ConfigAdapter extends TypeAdapter<Config> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is ConfigAdapter &&
+      other is SessionAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

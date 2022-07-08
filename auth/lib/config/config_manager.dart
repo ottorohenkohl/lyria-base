@@ -23,6 +23,5 @@ class ConfigManager {
         apiPath: '/',
         sessionDuration: 30,
         sessionKeeping: false);
-    ;
   }
 }
