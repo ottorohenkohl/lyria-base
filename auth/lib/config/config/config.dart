@@ -8,10 +8,10 @@ class Config extends HiveObject {
   final String apiHost;
 
   @HiveField(1)
-  final int apiPort;
-
-  @HiveField(2)
   final String apiPath;
+  
+  @HiveField(2)
+  final int apiPort;
 
   @HiveField(3)
   final int sessionDuration;
