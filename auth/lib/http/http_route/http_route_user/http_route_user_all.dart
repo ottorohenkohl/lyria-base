@@ -8,7 +8,7 @@ import 'package:auth/user/user_role/user_role.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-Handler http_route_user_all() {
+Handler httpRouteUserAll() {
   return Router()
     ..get('/user', (Request request) async {
       try {
@@ -21,14 +21,14 @@ Handler http_route_user_all() {
         }
 
         var users = [];
-        (await UserManager().all()).forEach((user) {
+        for (var user in (await UserManager().all())) {
           users.add({
             'username': user.username,
             'forename': user.forename ?? '',
             'surname': user.surname ?? '',
             'role': user.role
           });
-        });
+        }
 
         return HttpResponse().success(body: {'users': users});
       } on ExceptionForbidden {

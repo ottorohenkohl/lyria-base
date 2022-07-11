@@ -5,7 +5,7 @@ import 'package:auth/user/user/user.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-Handler http_route_session_logout() {
+Handler httpRouteSessionLogout() {
   return Router()
     ..post('/session/user/logout', (Request request) async {
       try {

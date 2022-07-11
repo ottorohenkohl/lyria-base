@@ -9,7 +9,7 @@ import 'package:auth/user/user_role/user_role.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-Handler http_route_user_delete() {
+Handler httpRouteUserDelete() {
   return Router()
     ..delete('/user/<username>', (Request request, String username) async {
       try {

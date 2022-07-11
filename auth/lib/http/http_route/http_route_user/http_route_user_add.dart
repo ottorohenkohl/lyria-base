@@ -11,7 +11,7 @@ import 'package:auth/user/user_role/user_role.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-Handler http_route_user_add() {
+Handler httpRouteUserAdd() {
   return Router()
     ..post('/user', (Request request) async {
       try {
