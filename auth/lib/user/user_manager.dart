@@ -1,3 +1,4 @@
+import 'package:auth/exceptions/exception_forbidden.dart';
 import 'package:auth/exceptions/exception_in_use.dart';
 import 'package:auth/exceptions/exception_not_found.dart';
 import 'package:auth/user/user/user.dart';
@@ -41,5 +42,13 @@ class UserManager {
     } catch (e) {
       throw ExceptionNotFound();
     }
+  }
+
+  Future<User> login(String username, String password) async {
+    var user = await get(username);
+    if (user.password != password) {
+      throw ExceptionForbidden();
+    }
+    return user;
   }
 }

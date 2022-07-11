@@ -9,13 +9,13 @@ class User extends HiveObject {
   final String username;
 
   @HiveField(1)
-  final String password;
-
-  @HiveField(2)
   final DateTime created;
 
-  @HiveField(3)
+  @HiveField(2)
   final UserRole role;
+
+  @HiveField(3)
+  String? password;
 
   @HiveField(4)
   String? forename;
