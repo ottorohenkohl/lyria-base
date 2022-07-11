@@ -53,7 +53,7 @@ class CommandUser extends Command {
 /// Main handler for all 'lyria' commands.
 class CommandAuth extends Command {
   @override
-  final String name = 'lyria';
+  final String name = 'auth';
 
   @override
   final String description = 'Manage the auth application.';
