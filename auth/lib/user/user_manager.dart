@@ -17,10 +17,12 @@ class UserManager {
     }
 
     try {
-      get(user.username);
+      await get(user.username);
       throw ExceptionInUse();
     } on ExceptionInUse {
       throw ExceptionInUse();
+    } on ExceptionNotFound {
+      // Ignored: Desired outcome.
     } catch (exception, stacktrace) {
       print(exception);
       print(stacktrace);

@@ -1,8 +1,9 @@
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
-import 'package:auth/console/console_command/console_command_lyria/console_command_lyria_reset.dart';
-import 'package:auth/console/console_command/console_command_lyria/console_command_lyria_start.dart';
+import 'package:auth/console/console_command/console_command_auth/console_command_auth_reset.dart';
+import 'package:auth/console/console_command/console_command_auth/console_command_auth_start.dart';
+import 'package:auth/console/console_command/console_command_config/console_command_config_reset.dart';
 import 'package:auth/console/console_command/console_command_user/console_command_user_add.dart';
 import 'package:auth/console/console_command/console_command_user/console_command_user_all.dart';
 import 'package:auth/console/console_command/console_command_user/console_command_user_delete.dart';
@@ -20,7 +21,7 @@ class ConsoleManager {
   }
 
   void handle(Iterable<String> arguments) {
-    CommandRunner('lyria-base', 'CLI of the auth application.')
+    CommandRunner('lyria-auth', 'CLI of the auth application.')
       ..addCommand(CommandUser())
       ..addCommand(CommandAuth())
       ..run(arguments);
@@ -59,7 +60,7 @@ class CommandAuth extends Command {
   final String description = 'Manage the auth application.';
 
   CommandAuth() {
-    addSubcommand(ConsoleCommandLyriaStart());
+    addSubcommand(ConsoleCommandAuthStart());
     addSubcommand(ConsoleCommandAuthReset());
   }
 }
@@ -73,7 +74,6 @@ class CommandConfig extends Command {
   final String description = 'Manage the config application.';
 
   CommandConfig() {
-    addSubcommand(ConsoleCommandLyriaStart());
-    addSubcommand(ConsoleCommandAuthReset());
+    addSubcommand(ConsoleCommandConfigReset());
   }
 }

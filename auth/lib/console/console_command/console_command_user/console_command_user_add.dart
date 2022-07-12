@@ -36,8 +36,8 @@ class ConsoleCommandUserAdd extends Command {
     }
 
     var user = User(username: username, password: password, role: userRole)
-      ..forename = argResults!['forname']
-      ..surname = argResults!['surname'];
+      ..forename = argResults!['forename'] ?? ''
+      ..surname = argResults!['surname'] ?? '';
 
     UserManager().add(user);
   }
