@@ -9,7 +9,7 @@ class Config extends HiveObject {
 
   @HiveField(1)
   final String apiPath;
-  
+
   @HiveField(2)
   final int apiPort;
 

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:auth/exceptions/exception_bad_request.dart';
 import 'package:auth/exceptions/exception_forbidden.dart';
 import 'package:auth/exceptions/exception_in_use.dart';
+import 'package:auth/exceptions/exception_internal_internal.dart';
 import 'package:auth/exceptions/exception_not_found.dart';
 import 'package:auth/http/http_manager.dart';
 import 'package:shelf/shelf.dart';
@@ -11,35 +12,49 @@ class HttpResponse {
   HttpResponse();
 
   Response badRequest() {
-    var body = jsonEncode({'message': ExceptionBadRequest().toString()});
-    return Response(400, body: body, headers: HttpManager().getHeaders());
+    var exception = ExceptionBadRequest();
+    var headers = HttpManager().getHeaders();
+    var body = jsonEncode({'message': exception.toString()});
+
+    return Response(exception.status, body: body, headers: headers);
   }
 
   Response forbidden() {
-    var body = jsonEncode({'message': ExceptionForbidden().toString()});
-    return Response(403, body: body, headers: HttpManager().getHeaders());
+    var exception = ExceptionForbidden();
+    var headers = HttpManager().getHeaders();
+    var body = jsonEncode({'message': exception.toString()});
+
+    return Response(exception.status, body: body, headers: headers);
   }
 
   Response internalError() {
-    var body = jsonEncode({'message': 'Something went wrong!'});
-    return Response(500, body: body, headers: HttpManager().getHeaders());
+    var exception = ExceptionInternalError();
+    var headers = HttpManager().getHeaders();
+    var body = jsonEncode({'message': exception.toString()});
+
+    return Response(exception.status, body: body, headers: headers);
   }
 
   Response inUse() {
-    var body = jsonEncode({'message': ExceptionInUse().toString()});
-    return Response(410, body: body, headers: HttpManager().getHeaders());
+    var exception = ExceptionInUse();
+    var headers = HttpManager().getHeaders();
+    var body = jsonEncode({'message': exception.toString()});
+
+    return Response(exception.status, body: body, headers: headers);
   }
 
   Response notFound() {
-    var body = jsonEncode({'message': ExceptionNotFound().toString()});
-    return Response(403, body: body, headers: HttpManager().getHeaders());
+    var exception = ExceptionNotFound();
+    var headers = HttpManager().getHeaders();
+    var body = jsonEncode({'message': exception.toString()});
+
+    return Response(exception.status, body: body, headers: headers);
   }
 
   Response success({Map<String, String>? headers, Map<String, dynamic>? body}) {
-    Map<String, dynamic> newBody = {'message': 'worked!'}..addAll(body ?? {});
-    Map<String, String> newHeaders = HttpManager().getHeaders()
-      ..addAll(headers ?? {});
+    body = {'message': 'worked!'}..addAll(body ?? {});
+    headers = HttpManager().getHeaders()..addAll(headers ?? {});
 
-    return Response(200, body: jsonEncode(newBody), headers: newHeaders);
+    return Response(200, body: jsonEncode(body), headers: headers);
   }
 }

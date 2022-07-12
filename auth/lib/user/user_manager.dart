@@ -1,3 +1,4 @@
+import 'package:auth/exceptions/exception_bad_request.dart';
 import 'package:auth/exceptions/exception_forbidden.dart';
 import 'package:auth/exceptions/exception_in_use.dart';
 import 'package:auth/exceptions/exception_not_found.dart';
@@ -9,6 +10,11 @@ class UserManager {
 
   Future<void> add(User user) async {
     var storage = await Hive.openBox<User>('users');
+    var validCharacters = RegExp(r'^[\w.]+$');
+
+    if (!validCharacters.hasMatch(user.username)) {
+      throw ExceptionBadRequest();
+    }
 
     try {
       get(user.username);
@@ -20,16 +26,12 @@ class UserManager {
       print(stacktrace);
     }
 
-    var validCharacters = RegExp(r'^[\w.]+$');
-    if (!validCharacters.hasMatch(user.username)) {
-      throw FormatException();
-    }
-
     storage.add(user);
   }
 
   Future<Iterable<User>> all() async {
     var storage = await Hive.openBox<User>('users');
+
     return storage.values;
   }
 
@@ -39,16 +41,18 @@ class UserManager {
 
     try {
       return user.single;
-    } catch (e) {
+    } catch (exception) {
       throw ExceptionNotFound();
     }
   }
 
   Future<User> login(String username, String password) async {
     var user = await get(username);
+
     if (user.password != password) {
       throw ExceptionForbidden();
     }
+
     return user;
   }
 }

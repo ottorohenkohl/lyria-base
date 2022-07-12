@@ -63,3 +63,17 @@ class CommandAuth extends Command {
     addSubcommand(ConsoleCommandAuthReset());
   }
 }
+
+/// Main handler for all 'config' commands.
+class CommandConfig extends Command {
+  @override
+  final String name = 'config';
+
+  @override
+  final String description = 'Manage the config application.';
+
+  CommandConfig() {
+    addSubcommand(ConsoleCommandLyriaStart());
+    addSubcommand(ConsoleCommandAuthReset());
+  }
+}

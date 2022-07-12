@@ -20,19 +20,22 @@ class HttpManager {
   HttpManager();
 
   Map<String, String> getHeaders() {
-    return {
+    var headers = {
       'Content-Type': 'application/json',
       'Accept-Type': 'application/json',
-      'server': 'lyra-base with http module'
+      'server': 'Auth application of the Lyria project.'
     };
+
+    return headers;
   }
 
   Future<Session> getSession(Map<String, String> headers) async {
     if (headers['Cookie'] == null) {
       throw ExceptionForbidden();
     }
+
     try {
-      String cookie = headers['Cookie']!.split(';')[0].split('=')[1];
+      var cookie = headers['Cookie']!.split(';')[0].split('=')[1];
       return await SessionManager().search(cookie);
     } catch (e) {
       throw ExceptionForbidden();
@@ -42,6 +45,7 @@ class HttpManager {
   Future<void> start() async {
     var host = (await ConfigManager().get()).apiHost;
     var port = (await ConfigManager().get()).apiPort;
+
     httpServer = await shelf_io.serve(
         Router()
           // Routes for user authentication.

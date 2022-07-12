@@ -1,6 +1,6 @@
 class ExceptionForbidden implements Exception {
-  final int status = 403;
   final String message = 'Forbidden.';
+  final int status = 403;
 
   @override
   String toString() => message;

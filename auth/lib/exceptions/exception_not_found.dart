@@ -1,6 +1,6 @@
 class ExceptionNotFound implements Exception {
-  final int status = 404;
   final String message = 'Not found.';
+  final int status = 404;
 
   @override
   String toString() => message;

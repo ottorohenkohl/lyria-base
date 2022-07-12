@@ -10,13 +10,13 @@ class SessionManager {
   Future<Session> create(dynamic entity) async {
     var storage = await Hive.openBox<Session>('sessions');
     var config = await ConfigManager().get();
-
     var cookie = Uuid().v4();
     var duration = Duration(minutes: config.sessionDuration);
     var session = Session(cookie: cookie, entity: entity)
       ..validity = DateTime.now().add(duration);
 
     storage.add(session);
+
     return session;
   }
 
@@ -37,6 +37,8 @@ class SessionManager {
     if (validity != null && validity.isAfter(DateTime.now())) {
       return true;
     }
+
+    session.delete();
 
     return false;
   }
