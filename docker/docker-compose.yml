@@ -3,6 +3,7 @@ services:
     image: ottorohenkohl/lyria-auth:latest
     build: ../auth/
     container_name: lyria.service.auth
+    restart: always
     environment:
       - API_HOST=localhost
       - APO_PATH=/
