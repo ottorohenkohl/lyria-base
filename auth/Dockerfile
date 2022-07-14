@@ -20,4 +20,4 @@ COPY --from=build /app/bin/auth /app/bin/
 
 # Start server.
 EXPOSE 80
-CMD ["/app/bin/auth auth start"]
+ENTRYPOINT ["/app/bin/auth", "auth", "start"]

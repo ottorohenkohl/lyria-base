@@ -1,7 +1,7 @@
 services:
   auth:
     image: ottorohenkohl/lyria-auth:latest
-    build: ../auth/Dockerfile
+    build: ../auth/
     container_name: lyria.service.auth
     environment:
       - API_HOST=localhost
