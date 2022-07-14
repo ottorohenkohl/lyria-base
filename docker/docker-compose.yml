@@ -1,0 +1,4 @@
+services:
+  auth:
+    image: ottorohenkohl/auth:latest
+    container_name: lyria.service.auth

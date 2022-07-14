@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:auth/config/config/config.dart';
+import 'package:auth/config/config_manager.dart';
 import 'package:auth/console/console_manager.dart';
 import 'package:auth/session/session/session.dart';
 import 'package:auth/user/user/user.dart';
@@ -13,5 +16,21 @@ void main(List<String> arguments) {
   Hive.registerAdapter(UserAdapter());
   Hive.registerAdapter(UserRoleAdapter());
 
+  autoConfig();
+
   ConsoleManager().handle(arguments);
+}
+
+void autoConfig() async {
+  var environment = Platform.environment;
+  var config = await ConfigManager().standard();
+
+  String apiHost = environment['API_HOST'] ?? config.apiHost;
+  String apiPath = environment['API_PATH'] ?? config.apiPath;
+
+  config = await ConfigManager().get();
+  config
+    ..apiHost = apiHost
+    ..apiPath = apiPath
+    ..save();
 }

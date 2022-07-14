@@ -5,19 +5,19 @@ part 'config.g.dart';
 @HiveType(typeId: 2)
 class Config extends HiveObject {
   @HiveField(0)
-  final String apiHost;
+  String apiHost;
 
   @HiveField(1)
-  final String apiPath;
+  String apiPath;
 
   @HiveField(2)
-  final int apiPort;
+  int apiPort;
 
   @HiveField(3)
-  final int sessionDuration;
+  int sessionDuration;
 
   @HiveField(4)
-  final bool sessionKeeping;
+  bool sessionKeeping;
 
   Config(
       {required this.apiHost,

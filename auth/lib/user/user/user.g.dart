@@ -18,8 +18,8 @@ class UserAdapter extends TypeAdapter<User> {
     };
     return User(
       username: fields[0] as String,
-      password: fields[1] as String,
-      role: fields[3] as UserRole,
+      password: fields[3] as String?,
+      role: fields[2] as UserRole,
     )
       ..forename = fields[4] as String?
       ..surname = fields[5] as String?
@@ -33,11 +33,11 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(0)
       ..write(obj.username)
       ..writeByte(1)
-      ..write(obj.password)
-      ..writeByte(2)
       ..write(obj.created)
-      ..writeByte(3)
+      ..writeByte(2)
       ..write(obj.role)
+      ..writeByte(3)
+      ..write(obj.password)
       ..writeByte(4)
       ..write(obj.forename)
       ..writeByte(5)

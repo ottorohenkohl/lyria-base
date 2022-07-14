@@ -21,7 +21,7 @@ class ConfigManager {
   Future<Config> standard() async {
     var config = Config(
         apiHost: 'localhost',
-        apiPort: 8080,
+        apiPort: 80,
         apiPath: '/',
         sessionDuration: 30,
         sessionKeeping: false);
