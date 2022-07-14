@@ -6,6 +6,11 @@ services:
     environment:
       - API_HOST=localhost
       - APO_PATH=/
+      - USER_USERNAME=[USERNAME]
+      - USER_PASSWORD=[PASSWORD]
+      - USER_ROLE=[ROLE]
+    ports:
+      - 8080:80
     networks:
       - lyria.network
     volumes:
