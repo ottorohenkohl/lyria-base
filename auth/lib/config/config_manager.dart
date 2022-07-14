@@ -8,7 +8,11 @@ class ConfigManager {
     var storage = await Hive.openBox<Config>('config');
     var config = storage.get('config');
 
-    return config ?? await standard();
+    if (config == null) {
+      config = await standard();
+      storage.put('config', config);
+    }
+    return config;
   }
 
   Future<void> reset() async {

@@ -16,6 +16,7 @@ void main(List<String> arguments) {
   Hive.registerAdapter(UserAdapter());
   Hive.registerAdapter(UserRoleAdapter());
 
+  print(Directory.current);
   autoConfig();
 
   ConsoleManager().handle(arguments);

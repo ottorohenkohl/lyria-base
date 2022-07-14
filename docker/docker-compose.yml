@@ -1,4 +1,21 @@
 services:
   auth:
     image: ottorohenkohl/auth:latest
+    build: https://raw.githubusercontent.com/ottorohenkohl/lyria-base/main/auth/docker/Dockerfile
     container_name: lyria.service.auth
+    environment:
+      - API_HOST=localhost
+      - APO_PATH=/
+    networks:
+      - lyria.network
+    volumes:
+      - lyria.volume.auth:
+
+networks:
+  lyria.network:
+    name: lyria.network
+    driver: bridge
+
+volumes:
+  lyria.volume.auth:
+    external: true
