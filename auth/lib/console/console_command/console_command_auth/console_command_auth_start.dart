@@ -13,6 +13,7 @@ class ConsoleCommandAuthStart extends Command {
 
   @override
   void run() async {
+    print('Starting...');
     HttpManager().start();
   }
 }

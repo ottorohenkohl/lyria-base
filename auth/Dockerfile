@@ -3,7 +3,7 @@ FROM dart:stable AS build
 
 # Resolve app dependencies.
 WORKDIR /app
-COPY ../pubspec.* ./
+COPY pubspec.* ./
 RUN dart pub get
 
 # Copy app source code and AOT compile it.
@@ -20,4 +20,4 @@ COPY --from=build /app/bin/auth /app/bin/
 
 # Start server.
 EXPOSE 80
-CMD ["/app/bin/auth"]
+CMD ["/app/bin/auth auth start"]
