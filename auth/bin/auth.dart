@@ -50,6 +50,10 @@ void autoUser() async {
       userRole == UserRole.admin;
     }
     var user = User(username: username, password: password, role: userRole);
-    UserManager().add(user);
+    try {
+      UserManager().add(user);
+    } catch (exception, stacktrace) {
+      print('Skipping user creation.');
+    }
   }
 }
