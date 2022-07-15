@@ -50,15 +50,15 @@ class HttpManager {
     httpServer = await shelf_io.serve(
         Router()
           // Routes for user authentication.
-          ..all('${path}session/user/login', httpRouteSessionLogin(path))
-          ..all('${path}session/user/logout', httpRouteSessionLogout(path))
+          ..all('$path/session/user/login', httpRouteSessionLogin(path))
+          ..all('$path/session/user/logout', httpRouteSessionLogout(path))
 
           // Routes for user management.
-          ..delete('${path}user/<username>', httpRouteUserDelete(path))
-          ..get('${path}user/<username>', httpRouteUserGet(path))
-          ..post('${path}user', httpRouteUserAdd(path))
-          ..get('${path}user', httpRouteUserAll(path))
-          ..patch('${path}user/<username>', httpRouteUserEdit(path)),
+          ..delete('$path/user/<username>', httpRouteUserDelete(path))
+          ..get('$path/user/<username>', httpRouteUserGet(path))
+          ..post('$path/user', httpRouteUserAdd(path))
+          ..get('$path/user', httpRouteUserAll(path))
+          ..patch('$path/user/<username>', httpRouteUserEdit(path)),
         host,
         port);
   }

@@ -12,7 +12,7 @@ import 'package:shelf_router/shelf_router.dart';
 
 Handler httpRouteSessionLogin(String path) {
   return Router()
-    ..post('${path}session/user/login', (Request request) async {
+    ..post('$path/session/user/login', (Request request) async {
       try {
         // Retrieving 'username' and 'password' from request body.
         String data = await request.readAsString();
