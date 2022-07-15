@@ -6,7 +6,7 @@ services:
     restart: always
     environment:
       - API_HOST=lyria.service.auth # Needs to match the containers name.
-      - APO_PATH=/
+      - API_PATH=/
       - USER_USERNAME=[USERNAME]
       - USER_PASSWORD=[PASSWORD]
       - USER_ROLE=[ROLE]
