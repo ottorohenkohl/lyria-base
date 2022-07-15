@@ -11,9 +11,9 @@ import 'package:auth/user/user_role/user_role.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-Handler httpRouteUserEdit() {
+Handler httpRouteUserEdit(String path) {
   return Router()
-    ..patch('/user/<username>', (Request request, String username) async {
+    ..patch('${path}user/<username>', (Request request, String username) async {
       try {
         // Retrieving desired changes from request.
         var json = jsonDecode(await request.readAsString());

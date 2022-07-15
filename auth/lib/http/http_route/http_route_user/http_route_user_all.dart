@@ -8,9 +8,9 @@ import 'package:auth/user/user_role/user_role.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-Handler httpRouteUserAll() {
+Handler httpRouteUserAll(String path) {
   return Router()
-    ..get('/user', (Request request) async {
+    ..get('${path}user', (Request request) async {
       try {
         // Get a valid session.
         Session session = await HttpManager().getSession(request.headers);

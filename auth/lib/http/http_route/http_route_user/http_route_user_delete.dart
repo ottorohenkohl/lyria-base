@@ -9,9 +9,10 @@ import 'package:auth/user/user_role/user_role.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-Handler httpRouteUserDelete() {
+Handler httpRouteUserDelete(String path) {
   return Router()
-    ..delete('/user/<username>', (Request request, String username) async {
+    ..delete('${path}user/<username>',
+        (Request request, String username) async {
       try {
         // Get a valid session.
         Session session = await HttpManager().getSession(request.headers);

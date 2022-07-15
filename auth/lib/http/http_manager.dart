@@ -44,20 +44,21 @@ class HttpManager {
 
   Future<void> start() async {
     var host = (await ConfigManager().get()).apiHost;
+    var path = (await ConfigManager().get()).apiPath;
     var port = (await ConfigManager().get()).apiPort;
 
     httpServer = await shelf_io.serve(
         Router()
           // Routes for user authentication.
-          ..all('/session/user/login', httpRouteSessionLogin())
-          ..all('/session/user/logout', httpRouteSessionLogout())
+          ..all('${path}session/user/login', httpRouteSessionLogin(path))
+          ..all('${path}session/user/logout', httpRouteSessionLogout(path))
 
           // Routes for user management.
-          ..delete('/user/<username>', httpRouteUserDelete())
-          ..get('/user/<username>', httpRouteUserGet())
-          ..post('/user', httpRouteUserAdd())
-          ..get('/user', httpRouteUserAll())
-          ..patch('/user/<username>', httpRouteUserEdit()),
+          ..delete('${path}user/<username>', httpRouteUserDelete(path))
+          ..get('${path}user/<username>', httpRouteUserGet(path))
+          ..post('${path}user', httpRouteUserAdd(path))
+          ..get('${path}user', httpRouteUserAll(path))
+          ..patch('${path}user/<username>', httpRouteUserEdit(path)),
         host,
         port);
   }

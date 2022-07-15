@@ -5,9 +5,9 @@ import 'package:auth/user/user/user.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
-Handler httpRouteSessionLogout() {
+Handler httpRouteSessionLogout(String path) {
   return Router()
-    ..post('/session/user/logout', (Request request) async {
+    ..post('${path}session/user/logout', (Request request) async {
       try {
         // Check for a valid user session.
         var session = await HttpManager().getSession(request.headers);
