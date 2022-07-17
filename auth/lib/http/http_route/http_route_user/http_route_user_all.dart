@@ -1,7 +1,6 @@
 import 'package:auth/exceptions/exception_forbidden.dart';
 import 'package:auth/http/http_manager.dart';
 import 'package:auth/http/http_response.dart';
-import 'package:auth/user/user/user.dart';
 import 'package:auth/user/user_manager.dart';
 import 'package:auth/user/user_role/user_role.dart';
 import 'package:shelf/shelf.dart';
@@ -17,7 +16,7 @@ Handler httpRouteUserAll(String path) {
         var session = await HttpManager().getSession(data);
 
         // Checking permissions.
-        if (session.entity.role != UserRole.admin || session.entity is! User) {
+        if (session.entity.role != UserRole.admin) {
           throw ExceptionForbidden();
         }
 

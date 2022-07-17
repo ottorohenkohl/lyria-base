@@ -31,7 +31,7 @@ Handler httpRouteUserAdd(String path) {
         }
 
         // Checking permissions.
-        if (session.entity.role != UserRole.admin || session.entity is! User) {
+        if (session.entity.role != UserRole.admin) {
           throw ExceptionForbidden();
         }
 

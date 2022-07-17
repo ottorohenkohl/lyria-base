@@ -4,6 +4,9 @@ import 'dart:io';
 import 'package:auth/config/config_manager.dart';
 import 'package:auth/console/console_manager.dart';
 import 'package:auth/exceptions/exception_forbidden.dart';
+import 'package:auth/http/http_route/http_route_permission/http_route_permission_add.dart';
+import 'package:auth/http/http_route/http_route_permission/http_route_permission_delete.dart';
+import 'package:auth/http/http_route/http_route_permission/http_route_permission_get.dart';
 import 'package:auth/http/http_route/http_route_session/http_route_session_user_login.dart';
 import 'package:auth/http/http_route/http_route_session/http_route_session_user_logout.dart';
 import 'package:auth/http/http_route/http_route_user/http_route_user_add.dart';
@@ -60,6 +63,11 @@ class HttpManager {
 
     httpServer = await shelf_io.serve(
         Router()
+          // Routes for permission managmenet.
+          ..post('$path/permission', httpRoutePermissionAdd(path))
+          ..delete('$path/permission', httpRoutePermissionDelete(path))
+          ..get('$path/permission', httpRoutePermissionGet(path))
+
           // Routes for user authentication.
           ..all('$path/session/user/login', httpRouteSessionLogin(path))
           ..all('$path/session/user/logout', httpRouteSessionLogout(path))

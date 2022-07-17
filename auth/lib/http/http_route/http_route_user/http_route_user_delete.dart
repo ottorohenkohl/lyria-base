@@ -21,8 +21,7 @@ Handler httpRouteUserDelete(String path) {
         User user = await UserManager().get(username);
 
         // Checking permissions.
-        if ((session.entity.role != UserRole.admin && session.entity != user) ||
-            session.entity is! User) {
+        if (session.entity.role != UserRole.admin && session.entity != user) {
           throw ExceptionForbidden();
         }
 
