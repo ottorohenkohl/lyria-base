@@ -1,7 +1,7 @@
 import 'package:args/command_runner.dart';
 import 'package:auth/user/user_manager.dart';
 
-/// Command for retrieving all users.
+/// Edit an existing 'User' object in the user module.
 class ConsoleCommandUserEdit extends Command {
   @override
   final String name = 'edit';

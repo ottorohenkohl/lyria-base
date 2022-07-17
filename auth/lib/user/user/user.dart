@@ -15,7 +15,7 @@ class User extends HiveObject {
   final UserRole role;
 
   @HiveField(3)
-  String? password;
+  String password;
 
   @HiveField(4)
   String? forename;

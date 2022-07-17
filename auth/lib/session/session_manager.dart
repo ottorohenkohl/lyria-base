@@ -4,9 +4,12 @@ import 'package:auth/session/session/session.dart';
 import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 
+/// For managing all tasks related to sessions.
 class SessionManager {
   SessionManager();
 
+  /// Create a new 'Session' object with specified entity.
+  /// The entity must have a 'EntityAdapter' to be stored via Hive.
   Future<Session> create(dynamic entity) async {
     var storage = await Hive.openBox<Session>('sessions');
     var config = await ConfigManager().get();
@@ -20,6 +23,7 @@ class SessionManager {
     return session;
   }
 
+  /// Search for an existing 'Session' object.
   Future<Session> search(String cookie) async {
     var storage = await Hive.openBox<Session>('sessions');
     var session = storage.values.where((session) => session.cookie == cookie);
@@ -31,6 +35,7 @@ class SessionManager {
     }
   }
 
+  /// Check whether a session is still valid.
   bool isValid(Session session) {
     var validity = session.validity;
 

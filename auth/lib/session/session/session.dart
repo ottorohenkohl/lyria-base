@@ -2,6 +2,7 @@ import 'package:hive/hive.dart';
 
 part 'session.g.dart';
 
+/// 'Session' DTO for storing session information.
 @HiveType(typeId: 3)
 class Session extends HiveObject {
   @HiveField(0)

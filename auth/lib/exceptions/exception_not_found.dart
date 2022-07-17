@@ -1,3 +1,4 @@
+/// Matches the equivalent Http-Response 'Not Found'.
 class ExceptionNotFound implements Exception {
   final String message = 'Not found.';
   final int status = 404;

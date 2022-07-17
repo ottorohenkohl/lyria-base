@@ -2,6 +2,7 @@ import 'package:hive/hive.dart';
 
 part 'config.g.dart';
 
+/// 'Config' DTO for storing configuration values.
 @HiveType(typeId: 2)
 class Config extends HiveObject {
   @HiveField(0)
@@ -16,13 +17,9 @@ class Config extends HiveObject {
   @HiveField(3)
   int sessionDuration;
 
-  @HiveField(4)
-  bool sessionKeeping;
-
   Config(
       {required this.apiHost,
       required this.apiPort,
       required this.apiPath,
-      required this.sessionDuration,
-      required this.sessionKeeping});
+      required this.sessionDuration});
 }

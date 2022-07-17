@@ -1,7 +1,7 @@
 import 'package:args/command_runner.dart';
 import 'package:auth/config/config_manager.dart';
 
-/// Command for starting the auth application.
+/// Reset the current 'Config' object on disk.
 class ConsoleCommandConfigReset extends Command {
   @override
   final String name = 'reset';

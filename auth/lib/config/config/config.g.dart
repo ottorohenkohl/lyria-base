@@ -21,14 +21,13 @@ class ConfigAdapter extends TypeAdapter<Config> {
       apiPort: fields[2] as int,
       apiPath: fields[1] as String,
       sessionDuration: fields[3] as int,
-      sessionKeeping: fields[4] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, Config obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.apiHost)
       ..writeByte(1)
@@ -36,9 +35,7 @@ class ConfigAdapter extends TypeAdapter<Config> {
       ..writeByte(2)
       ..write(obj.apiPort)
       ..writeByte(3)
-      ..write(obj.sessionDuration)
-      ..writeByte(4)
-      ..write(obj.sessionKeeping);
+      ..write(obj.sessionDuration);
   }
 
   @override

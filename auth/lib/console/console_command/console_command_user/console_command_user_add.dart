@@ -3,7 +3,7 @@ import 'package:auth/user/user/user.dart';
 import 'package:auth/user/user_manager.dart';
 import 'package:auth/user/user_role/user_role.dart';
 
-/// Command for adding a new user.
+/// Add a new 'User' object in the user module.
 class ConsoleCommandUserAdd extends Command {
   @override
   final String name = 'add';

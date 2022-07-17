@@ -1,7 +1,7 @@
 import 'package:args/command_runner.dart';
 import 'package:auth/user/user_manager.dart';
 
-/// Command for retrieving all users.
+/// Delete a specific 'User' object in the user module.
 class ConsoleCommandUserDelete extends Command {
   @override
   final String name = 'delete';

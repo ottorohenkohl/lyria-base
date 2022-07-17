@@ -1,79 +1,23 @@
-import 'dart:io';
-
 import 'package:args/command_runner.dart';
-import 'package:auth/console/console_command/console_command_auth/console_command_auth_reset.dart';
-import 'package:auth/console/console_command/console_command_auth/console_command_auth_start.dart';
-import 'package:auth/console/console_command/console_command_config/console_command_config_reset.dart';
-import 'package:auth/console/console_command/console_command_user/console_command_user_add.dart';
-import 'package:auth/console/console_command/console_command_user/console_command_user_all.dart';
-import 'package:auth/console/console_command/console_command_user/console_command_user_delete.dart';
-import 'package:auth/console/console_command/console_command_user/console_command_user_edit.dart';
-import 'package:auth/console/console_command/console_command_user/console_command_user_get.dart';
+import 'package:auth/console/console_command/console_command.dart';
 
-/// Main Interface to interact with the 'console' module.
+/// For managig any CLI related tasks.
 class ConsoleManager {
   ConsoleManager();
 
-  // Module content.
-  String get(dynamic message) {
-    stdout.write('$message \$ ');
-    return stdin.readLineSync()!;
-  }
-
+  /// Handle commandline arguments.
   void handle(Iterable<String> arguments) {
     CommandRunner('lyria-auth', 'CLI of the auth application.')
+      ..addCommand(CommandConfig())
+      ..addCommand(CommandHttp())
       ..addCommand(CommandUser())
-      ..addCommand(CommandAuth())
       ..run(arguments);
   }
 
+  /// Log a message with matching datetime.
   void log(dynamic message, String type) {
     var datetime = DateTime.now();
     var info = '[${type.toUpperCase()}]';
     print('$datetime $info  $message');
-  }
-}
-
-/// Main handler for all 'user' commands.
-class CommandUser extends Command {
-  @override
-  final String name = 'user';
-
-  @override
-  final String description = 'Manage the "user" module.';
-
-  CommandUser() {
-    addSubcommand(ConsoleCommandUserAdd());
-    addSubcommand(ConsoleCommandUserAll());
-    addSubcommand(ConsoleCommandUserDelete());
-    addSubcommand(ConsoleCommandUserEdit());
-    addSubcommand(ConsoleCommandUserGet());
-  }
-}
-
-/// Main handler for all 'lyria' commands.
-class CommandAuth extends Command {
-  @override
-  final String name = 'auth';
-
-  @override
-  final String description = 'Manage the auth application.';
-
-  CommandAuth() {
-    addSubcommand(ConsoleCommandAuthStart());
-    addSubcommand(ConsoleCommandAuthReset());
-  }
-}
-
-/// Main handler for all 'config' commands.
-class CommandConfig extends Command {
-  @override
-  final String name = 'config';
-
-  @override
-  final String description = 'Manage the config application.';
-
-  CommandConfig() {
-    addSubcommand(ConsoleCommandConfigReset());
   }
 }

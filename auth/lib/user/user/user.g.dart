@@ -18,7 +18,7 @@ class UserAdapter extends TypeAdapter<User> {
     };
     return User(
       username: fields[0] as String,
-      password: fields[3] as String?,
+      password: fields[3] as String,
       role: fields[2] as UserRole,
     )
       ..forename = fields[4] as String?

@@ -8,6 +8,10 @@ import 'package:auth/exceptions/exception_not_found.dart';
 import 'package:auth/http/http_manager.dart';
 import 'package:shelf/shelf.dart';
 
+/// Standard Http-Response templates.
+///
+/// For more information see the related RFC 7231.
+/// https://datatracker.ietf.org/doc/html/rfc7231#section-6.1
 class HttpResponse {
   HttpResponse();
 
@@ -36,7 +40,7 @@ class HttpResponse {
   }
 
   Response inUse() {
-    var exception = ExceptionInUse();
+    var exception = ExceptionConflict();
     var headers = HttpManager().getHeaders();
     var body = jsonEncode({'message': exception.toString()});
 

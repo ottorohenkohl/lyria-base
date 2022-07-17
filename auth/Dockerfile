@@ -10,14 +10,14 @@ RUN dart pub get
 COPY .. .
 # Ensure packages are still up-to-date if anything has changed
 RUN dart pub get --offline
-RUN dart compile exe bin/auth.dart -o bin/auth
+RUN dart compile exe bin/auth.dart -o bin/lyria-auth
 
 # Build minimal serving image from AOT-compiled `/auth` and required system
 # libraries and configuration files stored in `/runtime/` from the build stage.
 FROM scratch
 COPY --from=build /runtime/ /
-COPY --from=build /app/bin/auth /app/bin/
+COPY --from=build /app/bin/lyria-auth /app/bin/
 
 # Start server.
 EXPOSE 80
-ENTRYPOINT ["/app/bin/auth", "auth", "start"]
+ENTRYPOINT ["/app/bin/lyria-auth", "http", "start"]

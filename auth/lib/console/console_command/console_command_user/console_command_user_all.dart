@@ -1,7 +1,7 @@
 import 'package:args/command_runner.dart';
 import 'package:auth/user/user_manager.dart';
 
-/// Command for retrieving all users.
+/// Retrieve all 'User' objects existend in the user module.
 class ConsoleCommandUserAll extends Command {
   @override
   final String name = 'all';

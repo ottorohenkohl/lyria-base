@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:auth/exceptions/exception_bad_request.dart';
 import 'package:auth/exceptions/exception_forbidden.dart';
 import 'package:auth/exceptions/exception_not_found.dart';
+import 'package:auth/http/http_manager.dart';
 import 'package:auth/http/http_response.dart';
 import 'package:auth/session/session_manager.dart';
 import 'package:auth/user/user/user.dart';
@@ -10,6 +11,7 @@ import 'package:auth/user/user_manager.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
+/// Route for logging in and retrieving a valid session cookie.
 Handler httpRouteSessionLogin(String path) {
   return Router()
     ..post('$path/session/user/login', (Request request) async {
@@ -26,8 +28,9 @@ Handler httpRouteSessionLogin(String path) {
         var session = await SessionManager().create(user);
 
         // Return 'cookie'.
-        var headers = {'Set-Cookie': 'name=${session.cookie}'};
-        return HttpResponse().success(headers: headers);
+        var headers = HttpManager().getHeaders();
+        var body = {'Cookie': session.cookie};
+        return HttpResponse().success(headers: headers, body: body);
       } on ExceptionBadRequest {
         return HttpResponse().badRequest();
       } on ExceptionForbidden {

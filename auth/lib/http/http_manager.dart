@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:auth/config/config_manager.dart';
+import 'package:auth/console/console_manager.dart';
 import 'package:auth/exceptions/exception_forbidden.dart';
 import 'package:auth/http/http_route/http_route_session/http_route_session_user_login.dart';
 import 'package:auth/http/http_route/http_route_session/http_route_session_user_logout.dart';
@@ -11,14 +13,17 @@ import 'package:auth/http/http_route/http_route_user/http_route_user_edit.dart';
 import 'package:auth/http/http_route/http_route_user/http_route_user_get.dart';
 import 'package:auth/session/session/session.dart';
 import 'package:auth/session/session_manager.dart';
+import 'package:auth/user/user/user.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_router/shelf_router.dart';
 
+/// For managing all Http related tasks like a REST-API.
 class HttpManager {
   HttpServer? httpServer;
 
   HttpManager();
 
+  /// Retrieve default Http-Headers.
   Map<String, String> getHeaders() {
     var headers = {
       'Content-Type': 'application/json',
@@ -29,23 +34,29 @@ class HttpManager {
     return headers;
   }
 
-  Future<Session> getSession(Map<String, String> headers) async {
-    if (headers['Cookie'] == null) {
-      throw ExceptionForbidden();
-    }
-
+  /// Retrieve a 'Session' object through the Http-Request's data.
+  Future<Session> getSession(String request) async {
     try {
-      var cookie = headers['Cookie']!.split(';')[0].split('=')[1];
-      return await SessionManager().search(cookie);
-    } catch (e) {
+      var cookie = jsonDecode(request)['cookie'];
+      var session = await SessionManager().search(cookie);
+
+      if (session.entity is! User || !SessionManager().isValid(session)) {
+        throw ExceptionForbidden();
+      }
+
+      return session;
+    } catch (execption) {
       throw ExceptionForbidden();
     }
   }
 
+  /// Start listening on the REST-API.
   Future<void> start() async {
     var host = (await ConfigManager().get()).apiHost;
     var path = (await ConfigManager().get()).apiPath;
     var port = (await ConfigManager().get()).apiPort;
+
+    ConsoleManager().log('Listening on http://$host:$port$path', 'info');
 
     httpServer = await shelf_io.serve(
         Router()
@@ -63,8 +74,10 @@ class HttpManager {
         port);
   }
 
+  // Stop listening on the REST-API.
   Future<void> stop() async {
     if (httpServer != null) {
+      ConsoleManager().log('Stop Listening on http.', 'info');
       httpServer!.close();
     }
   }

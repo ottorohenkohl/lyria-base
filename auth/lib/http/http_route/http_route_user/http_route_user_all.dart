@@ -1,19 +1,20 @@
 import 'package:auth/exceptions/exception_forbidden.dart';
 import 'package:auth/http/http_manager.dart';
 import 'package:auth/http/http_response.dart';
-import 'package:auth/session/session/session.dart';
 import 'package:auth/user/user/user.dart';
 import 'package:auth/user/user_manager.dart';
 import 'package:auth/user/user_role/user_role.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 
+/// Route for retrieving all existing 'User' objects in the user module.
 Handler httpRouteUserAll(String path) {
   return Router()
-    ..get('${path}user', (Request request) async {
+    ..get('$path/user', (Request request) async {
       try {
-        // Get a valid session.
-        Session session = await HttpManager().getSession(request.headers);
+        // Get current Session.
+        var data = await request.readAsString();
+        var session = await HttpManager().getSession(data);
 
         // Checking permissions.
         if (session.entity.role != UserRole.admin || session.entity is! User) {
