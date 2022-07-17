@@ -18,4 +18,4 @@ The project should is mostly written in Dart because... Dart is awesome :heart:.
 
 ### [lyria-auth](auth)
 A application for anything regarding user management.  
-For more information see the individual [README](auth/readme.md).
+For more information see the individual [README](auth/README.md).
