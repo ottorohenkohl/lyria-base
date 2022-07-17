@@ -7,12 +7,21 @@ class PermissionManager {
 
   Future<void> add(Permission permission) async {
     var storage = await Hive.openBox<Permission>('permissions');
-    storage.add(permission);
+
+    for (var item in storage.values) {
+      if (permission.value == item.value &&
+          permission.user.username == item.user.username) {
+        return;
+      }
+    }
+
+    await storage.add(permission);
   }
 
   Future<Iterable<Permission>> get(User user) async {
     var storage = await Hive.openBox<Permission>('permissions');
-    return storage.values.where((permission) => permission.user == user);
+    return storage.values
+        .where((permission) => permission.user.username == user.username);
   }
 
   Future<bool> isAllowed(User user, String value) async {

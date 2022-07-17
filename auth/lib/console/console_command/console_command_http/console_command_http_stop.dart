@@ -1,7 +1,7 @@
 import 'package:args/command_runner.dart';
 import 'package:auth/http/http_manager.dart';
 
-/// Start listening through the http module.
+/// Stop listening through the http module.
 class ConsoleCommandHttpStart extends Command {
   @override
   final String name = 'stop';
@@ -13,6 +13,6 @@ class ConsoleCommandHttpStart extends Command {
 
   @override
   void run() async {
-    HttpManager().start();
+    HttpManager().stop();
   }
 }

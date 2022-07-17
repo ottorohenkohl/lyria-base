@@ -22,5 +22,6 @@ class ConsoleCommandUserAll extends Command {
         'role': user.role
       });
     }
+    print(users.toString());
   }
 }

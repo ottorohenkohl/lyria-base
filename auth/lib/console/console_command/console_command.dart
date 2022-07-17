@@ -3,6 +3,9 @@ import 'package:auth/console/console_command/console_command_config/console_comm
 import 'package:auth/console/console_command/console_command_config/console_command_config_reset.dart';
 import 'package:auth/console/console_command/console_command_config/console_command_config_set.dart';
 import 'package:auth/console/console_command/console_command_http/console_command_http_start.dart';
+import 'package:auth/console/console_command/console_command_permission/console_command_permission_add.dart';
+import 'package:auth/console/console_command/console_command_permission/console_command_permission_delete.dart';
+import 'package:auth/console/console_command/console_command_permission/console_command_permission_get.dart';
 import 'package:auth/console/console_command/console_command_user/console_command_user_add.dart';
 import 'package:auth/console/console_command/console_command_user/console_command_user_all.dart';
 import 'package:auth/console/console_command/console_command_user/console_command_user_delete.dart';
@@ -34,6 +37,21 @@ class CommandHttp extends Command {
 
   CommandHttp() {
     addSubcommand(ConsoleCommandHttpStart());
+  }
+}
+
+/// Subcommand for managing the permission module.
+class CommandPermission extends Command {
+  @override
+  final String name = 'permission';
+
+  @override
+  final String description = 'Manage the permission module.';
+
+  CommandPermission() {
+    addSubcommand(ConsoleCommandPermissionAdd());
+    addSubcommand(ConsoleCommandPermissionDelete());
+    addSubcommand(ConsoleCommandPermissionGet());
   }
 }
 

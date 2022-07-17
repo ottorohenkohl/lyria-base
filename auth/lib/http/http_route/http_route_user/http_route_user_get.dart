@@ -21,7 +21,8 @@ Handler httpRouteUserGet(String path) {
         User user = await UserManager().get(username);
 
         // Checking permissions.
-        if (session.entity.role != UserRole.admin && session.entity != user) {
+        if (session.entity.role != UserRole.admin &&
+            session.entity.username != user.username) {
           throw ExceptionForbidden();
         }
 

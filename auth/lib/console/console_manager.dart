@@ -10,6 +10,7 @@ class ConsoleManager {
     CommandRunner('lyria-auth', 'CLI of the auth application.')
       ..addCommand(CommandConfig())
       ..addCommand(CommandHttp())
+      ..addCommand(CommandPermission())
       ..addCommand(CommandUser())
       ..run(arguments);
   }
