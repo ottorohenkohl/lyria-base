@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the httpRouteUserAdd function from the http_route_user_add library, for the Dart programming language.">
+  <title>httpRouteUserAdd function - http_route_user_add library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">auth</a></li>
+    <li><a href="../http_http_route_http_route_user_http_route_user_add/http_http_route_http_route_user_http_route_user_add-library.html">http_route_user_add</a></li>
+    <li class="self-crumb">httpRouteUserAdd function</li>
+  </ol>
+  <div class="self-name">httpRouteUserAdd</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-function">httpRouteUserAdd</span> function 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+ 
+</h1></div>
+
+    <section class="multi-line-signature">
+        
+
+<span class="returntype"><a href="https://pub.dev/documentation/shelf/1.3.1/shelf/Handler.html">Handler</a></span>
+<span class="name ">httpRouteUserAdd</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="httpRouteUserAdd-param-path"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.17.5/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span></span></li>
+</ol>)
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Route for adding a new 'User' object in the user module.</p>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">Handler httpRouteUserAdd(String path) {
+  return Router()
+    ..post(&#39;$path&#47;user&#39;, (Request request) async {
+      try {
+        &#47;&#47; Get current Session.
+        var data = await request.readAsString();
+        var session = await HttpManager().getSession(data);
+
+        &#47;&#47; Retrieving user values from request body.
+        var json = jsonDecode(await request.readAsString());
+        String username = json[&#39;username&#39;];
+        String password = json[&#39;password&#39;];
+        String role = json[&#39;role&#39;];
+        String? forename = json[&#39;forename&#39;];
+        String? surname = json[&#39;surname&#39;];
+        if (role != &#39;admin&#39; &amp;&amp; role != &#39;user&#39;) {
+          throw FormatException();
+        }
+
+        &#47;&#47; Checking permissions.
+        if (session.entity.role != UserRole.admin || session.entity is! User) {
+          throw ExceptionForbidden();
+        }
+
+        &#47;&#47; Parse UserRole.
+        var userRole = UserRole.user;
+        if (role == &#39;admin&#39;) {
+          userRole = UserRole.admin;
+        }
+
+        &#47;&#47; Creating a new user.
+        var user = User(username: username, password: password, role: userRole)
+          ..forename = forename
+          ..surname = surname;
+        UserManager().add(user);
+
+        &#47;&#47; Return success.
+        return HttpResponse().success();
+      } on ExceptionBadRequest {
+        return HttpResponse().badRequest();
+      } on ExceptionForbidden {
+        return HttpResponse().forbidden();
+      } catch (exception) {
+        return HttpResponse().internalError();
+      }
+    });
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../index.html">auth</a></li>
+  <li><a href="../http_http_route_http_route_user_http_route_user_add/http_http_route_http_route_user_http_route_user_add-library.html">http_route_user_add</a></li>
+  <li class="self-crumb">httpRouteUserAdd function</li>
+</ol>
+
+
+    <h5>http_route_user_add library</h5>
+    <ol>
+
+
+
+
+
+  <li class="section-title"><a href="../http_http_route_http_route_user_http_route_user_add/http_http_route_http_route_user_http_route_user_add-library.html#functions">Functions</a></li>
+  <li><a href="../http_http_route_http_route_user_http_route_user_add/httpRouteUserAdd.html">httpRouteUserAdd</a></li>
+
+
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-left-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    auth
+      1.0.0
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+
