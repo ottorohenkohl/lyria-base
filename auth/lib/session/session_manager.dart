@@ -1,8 +1,9 @@
+import 'package:auth/config/config/config.dart';
 import 'package:auth/config/config_manager.dart';
-import 'package:auth/exceptions/exception_not_found.dart';
+import 'package:auth/exceptions/exception_auth.dart';
 import 'package:auth/session/session/session.dart';
+import 'package:auth/user/user/user.dart';
 import 'package:hive/hive.dart';
-import 'package:uuid/uuid.dart';
 
 /// For managing all tasks related to sessions.
 class SessionManager {
@@ -10,41 +11,32 @@ class SessionManager {
 
   /// Create a new 'Session' object with specified entity.
   /// The entity must have a 'EntityAdapter' to be stored via Hive.
-  Future<Session> create(dynamic entity) async {
-    var storage = await Hive.openBox<Session>('sessions');
-    var config = await ConfigManager().get();
-    var cookie = Uuid().v4();
-    var duration = Duration(minutes: config.sessionDuration);
-    var session = Session(cookie: cookie, entity: entity)
-      ..validity = DateTime.now().add(duration);
+  Future<Session> create(User user) async {
+    Box<Session> storage = await Hive.openBox<Session>('sessions');
+    Session session = Session(user: user);
 
-    storage.add(session);
-
+    await storage.add(session);
     return session;
   }
 
   /// Search for an existing 'Session' object.
-  Future<Session> search(String cookie) async {
-    var storage = await Hive.openBox<Session>('sessions');
-    var session = storage.values.where((session) => session.cookie == cookie);
+  Future<Session> check(String cookie) async {
+    Box<Session> storage = await Hive.openBox<Session>('sessions');
 
-    try {
-      return session.single;
-    } catch (e) {
-      throw ExceptionNotFound();
+    for (Session element in storage.values) {
+      if (element.cookie == cookie && await isValid(element)) {
+        return element;
+      }
     }
+
+    throw ExceptionAuth.forbidden();
   }
 
   /// Check whether a session is still valid.
-  bool isValid(Session session) {
-    var validity = session.validity;
+  Future<bool> isValid(Session session) async {
+    Config config = await ConfigManager().get();
+    Duration duration = Duration(minutes: config.sessionDuration);
 
-    if (validity != null && validity.isAfter(DateTime.now())) {
-      return true;
-    }
-
-    session.delete();
-
-    return false;
+    return session.created.add(duration).isAfter(DateTime.now());
   }
 }

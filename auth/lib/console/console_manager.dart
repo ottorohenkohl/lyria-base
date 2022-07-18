@@ -17,8 +17,8 @@ class ConsoleManager {
 
   /// Log a message with matching datetime.
   void log(dynamic message, String type) {
-    var datetime = DateTime.now();
-    var info = '[${type.toUpperCase()}]';
+    DateTime datetime = DateTime.now();
+    String info = '[${type.toUpperCase()}]';
     print('$datetime $info  $message');
   }
 }

@@ -1,4 +1,5 @@
 import 'package:args/command_runner.dart';
+import 'package:auth/user/user/user.dart';
 import 'package:auth/user/user_manager.dart';
 
 /// Retrieve a specific 'User' object in the user module.
@@ -15,12 +16,12 @@ class ConsoleCommandUserGet extends Command {
 
   @override
   void run() async {
-    var user = await UserManager().get(argResults!['username']);
-    var data = {
+    User user = await UserManager().get(username: argResults!['username']);
+    Map<String, String> data = {
       'username': user.username,
-      'role': user.role,
-      'forename': user.forename,
-      'surname': user.surname
+      'role': user.role.toString().split('.').last,
+      'forename': user.forename ?? '',
+      'surname': user.surname ?? ''
     };
 
     print(data);

@@ -17,8 +17,8 @@ class PermissionAdapter extends TypeAdapter<Permission> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Permission(
-      value: fields[0] as String,
-      user: fields[1] as User,
+      user: fields[0] as User,
+      value: fields[1] as String,
     );
   }
 
@@ -27,9 +27,9 @@ class PermissionAdapter extends TypeAdapter<Permission> {
     writer
       ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.value)
+      ..write(obj.user)
       ..writeByte(1)
-      ..write(obj.user);
+      ..write(obj.value);
   }
 
   @override

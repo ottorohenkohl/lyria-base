@@ -1,9 +1,10 @@
 import 'dart:convert';
 
-import 'package:auth/exceptions/exception_bad_request.dart';
-import 'package:auth/exceptions/exception_forbidden.dart';
+import 'package:auth/exceptions/exception_auth.dart';
 import 'package:auth/http/http_manager.dart';
 import 'package:auth/http/http_response.dart';
+import 'package:auth/session/session/session.dart';
+import 'package:auth/session/session_manager.dart';
 import 'package:auth/user/user/user.dart';
 import 'package:auth/user/user_manager.dart';
 import 'package:auth/user/user_role/user_role.dart';
@@ -15,46 +16,47 @@ Handler httpRouteUserAdd(String path) {
   return Router()
     ..post('$path/user', (Request request) async {
       try {
-        // Get current Session.
-        var data = await request.readAsString();
-        var session = await HttpManager().getSession(data);
+        // Parse request.
+        Map<String, String> parsed = await HttpManager().parseRequest(
+          request,
+          ['cookie', 'username', 'password', 'role'],
+          ['forename', 'surname'],
+        );
 
-        // Retrieving user values from request body.
-        var json = jsonDecode(await request.readAsString());
-        String username = json['username'];
-        String password = json['password'];
-        String role = json['role'];
-        String? forename = json['forename'];
-        String? surname = json['surname'];
-        if (role != 'admin' && role != 'user') {
-          throw FormatException();
+        // Get current Session.
+        Session session = await SessionManager().check(parsed['cookie']!);
+
+        // Checking correct formating.
+        if (parsed['role']! != 'admin' && parsed['role']! != 'user') {
+          throw ExceptionAuth.badRequest();
         }
 
         // Checking permissions.
-        if (session.entity.role != UserRole.admin) {
-          throw ExceptionForbidden();
+        if (session.user.role != UserRole.admin) {
+          throw ExceptionAuth.forbidden();
         }
 
         // Parse UserRole.
-        var userRole = UserRole.user;
-        if (role == 'admin') {
-          userRole = UserRole.admin;
-        }
+        UserRole role =
+            parsed['role']! == 'admin' ? UserRole.admin : UserRole.user;
 
         // Creating a new user.
-        var user = User(username: username, password: password, role: userRole)
-          ..forename = forename
-          ..surname = surname;
+        User user = User(
+            username: parsed['username']!,
+            password: parsed['password']!,
+            role: role)
+          ..forename = parsed['forename']
+          ..surname = parsed['surname'];
         UserManager().add(user);
 
         // Return success.
         return HttpResponse().success();
-      } on ExceptionBadRequest {
-        return HttpResponse().badRequest();
-      } on ExceptionForbidden {
-        return HttpResponse().forbidden();
       } catch (exception) {
-        return HttpResponse().internalError();
+        if (exception is ExceptionAuth) {
+          return exception.response();
+        } else {
+          rethrow;
+        }
       }
     });
 }

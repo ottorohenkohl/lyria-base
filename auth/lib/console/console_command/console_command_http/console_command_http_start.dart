@@ -4,10 +4,10 @@ import 'package:auth/http/http_manager.dart';
 /// Start listening through the http module.
 class ConsoleCommandHttpStart extends Command {
   @override
-  final String name = 'stop';
+  final String name = 'start';
 
   @override
-  final String description = 'Stop the http module.';
+  final String description = 'Start the http module.';
 
   ConsoleCommandHttpStart();
 

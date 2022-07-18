@@ -17,9 +17,10 @@ class Config extends HiveObject {
   @HiveField(3)
   int sessionDuration;
 
-  Config(
-      {required this.apiHost,
-      required this.apiPort,
-      required this.apiPath,
-      required this.sessionDuration});
+  Config({
+    required this.apiHost,
+    required this.apiPort,
+    required this.apiPath,
+    required this.sessionDuration,
+  });
 }

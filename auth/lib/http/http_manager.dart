@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:auth/config/config_manager.dart';
 import 'package:auth/console/console_manager.dart';
-import 'package:auth/exceptions/exception_forbidden.dart';
+import 'package:auth/exceptions/exception_auth.dart';
 import 'package:auth/http/http_route/http_route_permission/http_route_permission_add.dart';
 import 'package:auth/http/http_route/http_route_permission/http_route_permission_delete.dart';
 import 'package:auth/http/http_route/http_route_permission/http_route_permission_get.dart';
@@ -16,7 +16,7 @@ import 'package:auth/http/http_route/http_route_user/http_route_user_edit.dart';
 import 'package:auth/http/http_route/http_route_user/http_route_user_get.dart';
 import 'package:auth/session/session/session.dart';
 import 'package:auth/session/session_manager.dart';
-import 'package:auth/user/user/user.dart';
+import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_router/shelf_router.dart';
 
@@ -28,36 +28,44 @@ class HttpManager {
 
   /// Retrieve default Http-Headers.
   Map<String, String> getHeaders() {
-    var headers = {
+    Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Accept-Type': 'application/json',
-      'server': 'Auth application of the Lyria project.'
+      'server': 'Auth application of the Lyria project.',
     };
 
     return headers;
   }
 
-  /// Retrieve a 'Session' object through the Http-Request's data.
-  Future<Session> getSession(String request) async {
-    try {
-      var cookie = jsonDecode(request)['cookie'];
-      var session = await SessionManager().search(cookie);
+  Future<Map<String, String>> parseRequest(
+    Request request,
+    List<String> required,
+    List<String> optional,
+  ) async {
+    Map<String, String> parsed = {};
 
-      if (session.entity is! User || !SessionManager().isValid(session)) {
-        throw ExceptionForbidden();
+    try {
+      Map<String, dynamic> data = jsonDecode(await request.readAsString());
+
+      for (String element in required) {
+        parsed[element] = data[element];
       }
 
-      return session;
-    } catch (execption) {
-      throw ExceptionForbidden();
+      for (String element in optional) {
+        parsed[element] = data[element] ?? '';
+      }
+    } catch (e) {
+      throw ExceptionAuth.badRequest();
     }
+
+    return parsed;
   }
 
   /// Start listening on the REST-API.
   Future<void> start() async {
-    var host = (await ConfigManager().get()).apiHost;
-    var path = (await ConfigManager().get()).apiPath;
-    var port = (await ConfigManager().get()).apiPort;
+    String host = (await ConfigManager().get()).apiHost;
+    String path = (await ConfigManager().get()).apiPath;
+    int port = (await ConfigManager().get()).apiPort;
 
     ConsoleManager().log('Listening on http://$host:$port$path', 'info');
 
@@ -69,8 +77,8 @@ class HttpManager {
           ..get('$path/permission', httpRoutePermissionGet(path))
 
           // Routes for user authentication.
-          ..all('$path/session/user/login', httpRouteSessionLogin(path))
-          ..all('$path/session/user/logout', httpRouteSessionLogout(path))
+          ..all('$path/session/login', httpRouteSessionLogin(path))
+          ..all('$path/session/logout', httpRouteSessionLogout(path))
 
           // Routes for user management.
           ..delete('$path/user/<username>', httpRouteUserDelete(path))
@@ -84,9 +92,7 @@ class HttpManager {
 
   // Stop listening on the REST-API.
   Future<void> stop() async {
-    if (httpServer != null) {
-      ConsoleManager().log('Stop Listening on http.', 'info');
-      httpServer!.close();
-    }
+    ConsoleManager().log('Stop Listening on http.', 'info');
+    httpServer?.close();
   }
 }

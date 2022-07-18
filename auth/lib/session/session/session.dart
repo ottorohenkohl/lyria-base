@@ -1,4 +1,6 @@
+import 'package:auth/user/user/user.dart';
 import 'package:hive/hive.dart';
+import 'package:uuid/uuid.dart';
 
 part 'session.g.dart';
 
@@ -9,10 +11,12 @@ class Session extends HiveObject {
   final String cookie;
 
   @HiveField(1)
-  final dynamic entity;
+  final User user;
 
   @HiveField(2)
-  DateTime? validity;
+  final DateTime created;
 
-  Session({required this.cookie, required this.entity});
+  Session({required this.user})
+      : cookie = Uuid().v4(),
+        created = DateTime.now();
 }

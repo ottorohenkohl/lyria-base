@@ -15,6 +15,6 @@ class ConsoleCommandUserDelete extends Command {
 
   @override
   void run() async {
-    (await UserManager().get(argResults!['username'])).delete();
+    (await UserManager().get(username: argResults!['username'])).delete();
   }
 }

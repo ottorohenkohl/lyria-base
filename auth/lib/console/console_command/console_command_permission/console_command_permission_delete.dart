@@ -1,5 +1,6 @@
 import 'package:args/command_runner.dart';
 import 'package:auth/permission/permission/permission.dart';
+import 'package:auth/user/user/user.dart';
 import 'package:auth/user/user_manager.dart';
 
 /// Delete an existing 'Permission' object in the permission module.
@@ -21,8 +22,8 @@ class ConsoleCommandPermissionDelete extends Command {
     String username = argResults!['username'];
     String value = argResults!['value'];
 
-    var user = await UserManager().get(username);
-    var permission = Permission(user: user, value: value);
+    User user = await UserManager().get(username: username);
+    Permission permission = Permission(user: user, value: value);
 
     await permission.delete();
   }

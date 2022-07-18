@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:args/command_runner.dart';
+import 'package:auth/config/config/config.dart';
 import 'package:auth/config/config_manager.dart';
 
 /// Get the currently saved 'Config' object.
@@ -15,9 +16,9 @@ class ConsoleCommandConfigGet extends Command {
 
   @override
   void run() async {
-    var config = await ConfigManager().get();
+    Config config = await ConfigManager().get();
 
-    var json = jsonEncode({
+    String json = jsonEncode({
       'apiHost': config.apiHost,
       'apiPort': config.apiPort,
       'apiPath': config.apiPath,

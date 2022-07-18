@@ -3,6 +3,7 @@ import 'package:auth/console/console_command/console_command_config/console_comm
 import 'package:auth/console/console_command/console_command_config/console_command_config_reset.dart';
 import 'package:auth/console/console_command/console_command_config/console_command_config_set.dart';
 import 'package:auth/console/console_command/console_command_http/console_command_http_start.dart';
+import 'package:auth/console/console_command/console_command_http/console_command_http_stop.dart';
 import 'package:auth/console/console_command/console_command_permission/console_command_permission_add.dart';
 import 'package:auth/console/console_command/console_command_permission/console_command_permission_delete.dart';
 import 'package:auth/console/console_command/console_command_permission/console_command_permission_get.dart';
@@ -37,6 +38,7 @@ class CommandHttp extends Command {
 
   CommandHttp() {
     addSubcommand(ConsoleCommandHttpStart());
+    addSubcommand(ConsoleCommandHttpStop());
   }
 }
 

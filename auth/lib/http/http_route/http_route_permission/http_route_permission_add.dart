@@ -1,12 +1,13 @@
 import 'dart:convert';
 
-import 'package:auth/exceptions/exception_bad_request.dart';
-import 'package:auth/exceptions/exception_forbidden.dart';
-import 'package:auth/exceptions/exception_not_found.dart';
+import 'package:auth/exceptions/exception_auth.dart';
 import 'package:auth/http/http_manager.dart';
 import 'package:auth/http/http_response.dart';
 import 'package:auth/permission/permission/permission.dart';
 import 'package:auth/permission/permission_manager.dart';
+import 'package:auth/session/session/session.dart';
+import 'package:auth/session/session_manager.dart';
+import 'package:auth/user/user/user.dart';
 import 'package:auth/user/user_manager.dart';
 import 'package:auth/user/user_role/user_role.dart';
 import 'package:shelf/shelf.dart';
@@ -17,37 +18,36 @@ Handler httpRoutePermissionAdd(String path) {
   return Router()
     ..post('$path/permission', (Request request) async {
       try {
-        // Get current Session.
-        var data = await request.readAsString();
-        var session = await HttpManager().getSession(data);
+        // Parse request.
+        Map<String, String> parsed = await HttpManager().parseRequest(
+          request,
+          ['cookie', 'username', 'value'],
+          [],
+        );
 
-        // Retrieving permission values from request body.
-        var json = jsonDecode(await request.readAsString());
-        String username = json['username'];
-        String value = json['value'];
+        // Get current Session.
+        Session session = await SessionManager().check(parsed['cookie']!);
 
         // Checking permissions.
-        if (session.entity.role != UserRole.admin) {
-          throw ExceptionForbidden();
+        if (session.user.role != UserRole.admin) {
+          throw ExceptionAuth.forbidden();
         }
 
         // Get user.
-        var user = await UserManager().get(username);
+        User user = await UserManager().get(username: parsed['username']!);
 
         // Creating a new permission.
-        var permission = Permission(user: user, value: value);
+        Permission permission = Permission(user: user, value: parsed['value']!);
         PermissionManager().add(permission);
 
         // Return success.
         return HttpResponse().success();
-      } on ExceptionBadRequest {
-        return HttpResponse().badRequest();
-      } on ExceptionForbidden {
-        return HttpResponse().forbidden();
-      } on ExceptionNotFound {
-        return HttpResponse().notFound();
       } catch (exception) {
-        return HttpResponse().internalError();
+        if (exception is ExceptionAuth) {
+          return exception.response();
+        } else {
+          rethrow;
+        }
       }
     });
 }

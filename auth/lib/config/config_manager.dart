@@ -8,30 +8,33 @@ class ConfigManager {
 
   /// Get a current 'Config' object.
   Future<Config> get() async {
-    var storage = await Hive.openBox<Config>('config');
-    var config = storage.get('config');
+    Box<Config> storage = await Hive.openBox<Config>('config');
 
-    if (config == null) {
-      config = await standard();
-      storage.put('config', config);
+    if (storage.get('config') == null) {
+      await reset();
     }
-    return config;
+
+    return storage.get('config')!;
   }
 
   /// Reset the current 'Config' object on disk.
   Future<void> reset() async {
     ConsoleManager().log('Reseting configuration.', 'info');
 
-    var storage = await Hive.openBox<Config>('config');
-    var config = await standard();
+    Box<Config> storage = await Hive.openBox<Config>('config');
+    Config config = await standard();
 
     storage.put('config', config);
   }
 
   /// Return the standard 'Config' object.
   Future<Config> standard() async {
-    var config = Config(
-        apiHost: 'localhost', apiPort: 80, apiPath: '/', sessionDuration: 30);
+    Config config = Config(
+      apiHost: 'localhost',
+      apiPort: 80,
+      apiPath: '',
+      sessionDuration: 30,
+    );
 
     return config;
   }

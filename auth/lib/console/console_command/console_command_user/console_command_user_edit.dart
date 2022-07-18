@@ -1,4 +1,5 @@
 import 'package:args/command_runner.dart';
+import 'package:auth/user/user/user.dart';
 import 'package:auth/user/user_manager.dart';
 
 /// Edit an existing 'User' object in the user module.
@@ -20,7 +21,7 @@ class ConsoleCommandUserEdit extends Command {
 
   @override
   void run() async {
-    var user = await UserManager().get(argResults!['username']);
+    User user = await UserManager().get(username: argResults!['username']);
 
     user
       ..password = argResults!['password'] ?? user.password

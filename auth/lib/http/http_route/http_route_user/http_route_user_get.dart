@@ -1,7 +1,8 @@
-import 'package:auth/exceptions/exception_forbidden.dart';
-import 'package:auth/exceptions/exception_not_found.dart';
+import 'package:auth/exceptions/exception_auth.dart';
 import 'package:auth/http/http_manager.dart';
 import 'package:auth/http/http_response.dart';
+import 'package:auth/session/session/session.dart';
+import 'package:auth/session/session_manager.dart';
 import 'package:auth/user/user/user.dart';
 import 'package:auth/user/user_manager.dart';
 import 'package:auth/user/user_role/user_role.dart';
@@ -13,34 +14,43 @@ Handler httpRouteUserGet(String path) {
   return Router()
     ..get('$path/user/<username>', (Request request, String username) async {
       try {
+        // Parse request.
+        Map<String, String> parsed = await HttpManager().parseRequest(
+          request,
+          ['cookie'],
+          [],
+        );
+
         // Get current Session.
-        var data = await request.readAsString();
-        var session = await HttpManager().getSession(data);
+        Session session = await SessionManager().check(parsed['cookie']!);
 
         // Retrieving desired user.
-        User user = await UserManager().get(username);
+        User user = await UserManager().get(username: username);
 
         // Checking permissions.
-        if (session.entity.role != UserRole.admin &&
-            session.entity.username != user.username) {
-          throw ExceptionForbidden();
+        if (session.user.role != UserRole.admin &&
+            session.user.username != user.username) {
+          throw ExceptionAuth.forbidden();
         }
 
-        // Return success.
-        return HttpResponse().success(body: {
+        // Format 'User' object.
+        Map<String, Map<String, String>> body = {
           'user': {
             'username': user.username,
             'forename': user.forename ?? '',
             'surname': user.surname ?? '',
-            'role': user.role
+            'role': user.role.toString().split('.').last,
           }
-        });
-      } on ExceptionForbidden {
-        return HttpResponse().forbidden();
-      } on ExceptionNotFound {
-        return HttpResponse().notFound();
+        };
+
+        // Return success.
+        return HttpResponse().success(body: body);
       } catch (exception) {
-        return HttpResponse().internalError();
+        if (exception is ExceptionAuth) {
+          return exception.response();
+        } else {
+          rethrow;
+        }
       }
     });
 }

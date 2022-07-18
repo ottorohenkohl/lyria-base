@@ -11,5 +11,8 @@ class Permission extends HiveObject {
   @HiveField(1)
   final String value;
 
-  Permission({required this.user, required this.value});
+  Permission({
+    required this.user,
+    required this.value,
+  });
 }

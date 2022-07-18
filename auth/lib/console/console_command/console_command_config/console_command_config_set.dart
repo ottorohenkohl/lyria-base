@@ -1,4 +1,5 @@
 import 'package:args/command_runner.dart';
+import 'package:auth/config/config/config.dart';
 import 'package:auth/config/config_manager.dart';
 
 /// Set a value in the 'Config' object.
@@ -19,7 +20,7 @@ class ConsoleCommandConfigSet extends Command {
 
   @override
   void run() async {
-    var config = await ConfigManager().get();
+    Config config = await ConfigManager().get();
 
     await ConfigManager().get()
       ..apiHost = argResults!['apiHost'] ?? config.apiHost

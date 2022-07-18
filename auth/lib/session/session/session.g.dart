@@ -17,9 +17,8 @@ class SessionAdapter extends TypeAdapter<Session> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Session(
-      cookie: fields[0] as String,
-      entity: fields[1] as dynamic,
-    )..validity = fields[2] as DateTime?;
+      user: fields[1] as User,
+    );
   }
 
   @override
@@ -29,9 +28,9 @@ class SessionAdapter extends TypeAdapter<Session> {
       ..writeByte(0)
       ..write(obj.cookie)
       ..writeByte(1)
-      ..write(obj.entity)
+      ..write(obj.user)
       ..writeByte(2)
-      ..write(obj.validity);
+      ..write(obj.created);
   }
 
   @override
