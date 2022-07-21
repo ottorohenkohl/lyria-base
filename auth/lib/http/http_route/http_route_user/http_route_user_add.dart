@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:auth/exceptions/exception_auth.dart';
 import 'package:auth/http/http_manager.dart';
 import 'package:auth/http/http_response.dart';
@@ -47,7 +45,7 @@ Handler httpRouteUserAdd(String path) {
             role: role)
           ..forename = parsed['forename']
           ..surname = parsed['surname'];
-        UserManager().add(user);
+        await UserManager().add(user);
 
         // Return success.
         return HttpResponse().success();

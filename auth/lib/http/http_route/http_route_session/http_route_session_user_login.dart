@@ -11,7 +11,7 @@ import 'package:shelf_router/shelf_router.dart';
 /// Route for logging in and retrieving a valid session cookie.
 Handler httpRouteSessionLogin(String path) {
   return Router()
-    ..post('$path/session/login', (Request request) async {
+    ..post('$path/session', (Request request) async {
       try {
         // Parse request.
         Map<String, String> parsed = await HttpManager().parseRequest(

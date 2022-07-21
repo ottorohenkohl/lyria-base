@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:auth/exceptions/exception_auth.dart';
 import 'package:auth/http/http_manager.dart';
 import 'package:auth/http/http_response.dart';

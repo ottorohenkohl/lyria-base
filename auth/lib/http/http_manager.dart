@@ -14,8 +14,6 @@ import 'package:auth/http/http_route/http_route_user/http_route_user_all.dart';
 import 'package:auth/http/http_route/http_route_user/http_route_user_delete.dart';
 import 'package:auth/http/http_route/http_route_user/http_route_user_edit.dart';
 import 'package:auth/http/http_route/http_route_user/http_route_user_get.dart';
-import 'package:auth/session/session/session.dart';
-import 'package:auth/session/session_manager.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_router/shelf_router.dart';
@@ -72,13 +70,14 @@ class HttpManager {
     httpServer = await shelf_io.serve(
         Router()
           // Routes for permission managmenet.
-          ..post('$path/permission', httpRoutePermissionAdd(path))
-          ..delete('$path/permission', httpRoutePermissionDelete(path))
-          ..get('$path/permission', httpRoutePermissionGet(path))
+          ..post('$path/permission/<username>', httpRoutePermissionAdd(path))
+          ..delete(
+              '$path/permission/<username>', httpRoutePermissionDelete(path))
+          ..get('$path/permission/<username>', httpRoutePermissionGet(path))
 
           // Routes for user authentication.
-          ..all('$path/session/login', httpRouteSessionLogin(path))
-          ..all('$path/session/logout', httpRouteSessionLogout(path))
+          ..post('$path/session', httpRouteSessionLogin(path))
+          ..delete('$path/session', httpRouteSessionLogout(path))
 
           // Routes for user management.
           ..delete('$path/user/<username>', httpRouteUserDelete(path))

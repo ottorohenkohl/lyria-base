@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:auth/exceptions/exception_auth.dart';
 import 'package:auth/http/http_manager.dart';
 import 'package:auth/http/http_response.dart';
@@ -16,7 +14,7 @@ import 'package:shelf_router/shelf_router.dart';
 /// Route for deleting a specific 'User' object in the user module.
 Handler httpRoutePermissionDelete(String path) {
   return Router()
-    ..delete('$path/permission', (Request request) async {
+    ..delete('$path/permission', (Request request, String username) async {
       try {
         // Parse request.
         Map<String, String> parsed = await HttpManager().parseRequest(
@@ -29,7 +27,7 @@ Handler httpRoutePermissionDelete(String path) {
         Session session = await SessionManager().check(parsed['cookie']!);
 
         // Retrieving desired user.
-        User user = await UserManager().get(username: parsed['username']!);
+        User user = await UserManager().get(username: username);
 
         // Checking permissions.
         if (session.user.role != UserRole.admin) {

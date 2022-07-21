@@ -9,7 +9,7 @@ import 'package:shelf_router/shelf_router.dart';
 /// Route for logging out by deleting the current 'Session' object.
 Handler httpRouteSessionLogout(String path) {
   return Router()
-    ..post('$path/session/logout', (Request request) async {
+    ..delete('$path/session', (Request request) async {
       try {
         // Parse request.
         Map<String, String> parsed =

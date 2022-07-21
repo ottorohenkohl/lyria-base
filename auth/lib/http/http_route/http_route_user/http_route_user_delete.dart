@@ -17,7 +17,7 @@ Handler httpRouteUserDelete(String path) {
         // Parse request.
         Map<String, String> parsed = await HttpManager().parseRequest(
           request,
-          ['cookie', 'username', 'value'],
+          ['cookie'],
           [],
         );
 

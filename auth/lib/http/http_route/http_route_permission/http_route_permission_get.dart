@@ -14,7 +14,7 @@ import 'package:shelf_router/shelf_router.dart';
 // Route for retrieving a specifig 'User' object from the user module.
 Handler httpRoutePermissionGet(String path) {
   return Router()
-    ..get('$path/permission', (Request request) async {
+    ..get('$path/permission', (Request request, String username) async {
       try {
         // Parse request.
         Map<String, String> parsed = await HttpManager().parseRequest(
@@ -27,7 +27,7 @@ Handler httpRoutePermissionGet(String path) {
         Session session = await SessionManager().check(parsed['cookie']!);
 
         // Retrieving desired user.
-        User user = await UserManager().get(username: parsed['username']!);
+        User user = await UserManager().get(username: username);
 
         // Checking permissions.
         if (session.user.role != UserRole.admin &&
